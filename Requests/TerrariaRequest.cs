@@ -1,17 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Terraria;
+using Terraria.ModLoader;
 
 namespace WikiBrowser.Requests {
-    public class TerrariaRequest : HttpRequest {
+    public class TerrariaRequest {
+        private const string BaseUri = "https://terraria.fandom.com/api.php";
+        private static readonly HttpClient HttpClient = new HttpClient();
         private Task<string> _task;
-
-        public TerrariaRequest() {
-            BaseUri = "https://terraria.fandom.com/api.php";
-        }
-
 
         public bool IsDone() {
             return _task.IsCompleted;
@@ -19,17 +17,35 @@ namespace WikiBrowser.Requests {
 
         public string Result() {
             if (IsDone()) {
-                var a = ((JObject) JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(_task.Result)["query"]);
-                var b = a.SelectToken("$..extract").ToString();
-                return b;
+                var extract =
+                    Helpers.GetExtract(_task.Result);
+                return extract ?? "Extract is null?";
             }
 
-            return IsDone() ? _task.Result : "Awaiting result";
+            return "Awaiting result";
         }
 
 
         public void GetItem(Item item) {
-            _task = Get(item.Name);
+            var uri = Helpers.FormUri(item.Name, BaseUri);
+            _task = GetStringFromHttp(uri);
+        }
+
+
+        protected async Task<string> GetStringFromHttp(string uri) {
+            ModContent.GetInstance<WikiBrowser>().Logger
+                .Info("####################Starting the http task######################");
+            try {
+                ModContent.GetInstance<WikiBrowser>().Logger.Info(uri);
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                return await HttpClient.GetStringAsync(uri);
+            } catch (HttpRequestException e) {
+                ModContent.GetInstance<WikiBrowser>().Logger.Error("http error: " + e.StackTrace);
+            } catch (Exception e) {
+                ModContent.GetInstance<WikiBrowser>().Logger.Error("unknown error: " + e.Message);
+            }
+
+            return null;
         }
     }
 }

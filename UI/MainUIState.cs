@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
@@ -8,20 +7,19 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
 using WikiBrowser.Requests;
-using Player = On.Terraria.Player;
 
 namespace WikiBrowser.UI {
     // MainUIState's visibility is toggled by typing "/test" in chat. (See TestCommand.cs)
     // MainUIState is a simple UI example showing how to use UIPanel, UIImageButton, and even a custom UIElement.
     internal class MainUIState : UIState {
-        private TerrariaRequest _request;
+        public static bool Visible;
 
         private DragableUIPanel _mainPanel;
+        private TerrariaRequest _request;
 
         private UIHoverImageButton _sendRequestButton;
-        private VanillaItemSlotWrapper _vanillaItemSlot;
         private UIText _text;
-        public static bool Visible;
+        private VanillaItemSlotWrapper _vanillaItemSlot;
 
         // In OnInitialize, we place various UIElements onto our UIState (this class).
         // UIState classes have width and height equal to the full screen, because of this, usually we first define a UIElement that will act as the container for our UI.
@@ -41,24 +39,24 @@ namespace WikiBrowser.UI {
             _mainPanel.BackgroundColor = new Color(73, 94, 171);
 
 
-            Texture2D closeTexture = ModContent.GetTexture(Textures.closeButton);
-            UIHoverImageButton closeButton =
+            var closeTexture = ModContent.GetTexture(Textures.closeButton);
+            var closeButton =
                 new UIHoverImageButton(closeTexture,
                     Language.GetTextValue("LegacyInterface.52"));
             closeButton.Left.Set(140, 0f);
             closeButton.Top.Set(10, 0f);
             closeButton.Width.Set(22, 0f);
             closeButton.Height.Set(22, 0f);
-            closeButton.OnClick += new MouseEvent(CloseButtonClicked);
+            closeButton.OnClick += CloseButtonClicked;
             _mainPanel.Append(closeButton);
 
-            Texture2D upTexture = ModContent.GetTexture(Textures.VoteUp);
+            var upTexture = ModContent.GetTexture(Textures.VoteUp);
             _sendRequestButton = new UIHoverImageButton(upTexture, "Send request");
             _sendRequestButton.Left.Set(140, 0f);
             _sendRequestButton.Top.Set(36, 0f);
             _sendRequestButton.Width.Set(22, 0f);
             _sendRequestButton.Height.Set(22, 0f);
-            _sendRequestButton.OnClick += new MouseEvent(RequestButtonClicked);
+            _sendRequestButton.OnClick += RequestButtonClicked;
             _mainPanel.Append(_sendRequestButton);
 
 
@@ -70,7 +68,7 @@ namespace WikiBrowser.UI {
             _mainPanel.Append(_vanillaItemSlot);
 
 
-            _text = new UIText("Here is a different text", 1F, false);
+            _text = new UIText("Here is a different text");
             _text.Left.Set(20, 0);
             _text.Top.Set(260, 0);
             _text.Height.Set(70, 0);
@@ -78,10 +76,6 @@ namespace WikiBrowser.UI {
             _mainPanel.Append(_text);
 
             Append(_mainPanel);
-
-            // As a recap, ExampleUI is a UIState, meaning it covers the whole screen. We attach coinCounterPanel to ExampleUI some distance from the top left corner.
-            // We then place playButton, closeButton, and moneyDiplay onto coinCounterPanel so we can easily place these UIElements relative to coinCounterPanel.
-            // Since coinCounterPanel will move, this proper organization will move playButton, closeButton, and moneyDiplay properly when coinCounterPanel moves.
         }
 
 
@@ -90,7 +84,6 @@ namespace WikiBrowser.UI {
             if (!_vanillaItemSlot.Item.IsAir) {
                 // QuickSpawnClonedItem will preserve mod data of the item. QuickSpawnItem will just spawn a fresh version of the item, losing the prefix.
                 Main.LocalPlayer.QuickSpawnClonedItem(_vanillaItemSlot.Item, _vanillaItemSlot.Item.stack);
-                // Now that we've spawned the item back onto the player, we reset the item by turning it into air.
                 _vanillaItemSlot.Item.TurnToAir();
             }
 
@@ -105,12 +98,27 @@ namespace WikiBrowser.UI {
                 _text.SetText("No Item");
             } else {
                 _request.GetItem(_vanillaItemSlot.Item);
-                Task task = Task.Run(() => {
+                ModContent.GetInstance<WikiBrowser>().Logger
+                    .Info("####################Http task should have started######################");
+                var task = Task.Run(() => {
+                    string[] loadingAnim = {
+                        "Loading.", "Loading.", "Loading.",
+                        "Loading..", "Loading..", "Loading..",
+                        "Loading...", "Loading...", "Loading..."
+                    };
+                    var i = 0;
                     while (!_request.IsDone()) {
-                        _text.SetText("Loading...");
+                        _text.SetText(loadingAnim[i]);
+                        i %= loadingAnim.Length;
+                        Main.NewText("Still in task, request" + (_request.IsDone() ? " is done" : " is not done"));
                     }
 
+                    if (_request.Result() == null)
+                        ModContent.GetInstance<WikiBrowser>().Logger
+                            .Info("#######################Result obtained, but it is null######################");
+
                     _text.SetText(_request.Result());
+                    ModContent.GetInstance<WikiBrowser>().Logger.Info("Task finished, page loaded");
                 });
             }
         }
