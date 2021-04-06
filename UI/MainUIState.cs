@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
@@ -7,10 +6,10 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
 using WikiBrowser.Requests;
+using static WikiBrowser.UI.UiConfig;
 
 namespace WikiBrowser.UI {
     // MainUIState's visibility is toggled by typing "/test" in chat. (See TestCommand.cs)
-    // MainUIState is a simple UI example showing how to use UIPanel, UIImageButton, and even a custom UIElement.
     internal class MainUIState : UIState {
         public static bool Visible;
 
@@ -21,48 +20,42 @@ namespace WikiBrowser.UI {
         private UIText _text;
         private VanillaItemSlotWrapper _vanillaItemSlot;
 
-        // In OnInitialize, we place various UIElements onto our UIState (this class).
-        // UIState classes have width and height equal to the full screen, because of this, usually we first define a UIElement that will act as the container for our UI.
-        // We then place various other UIElement onto that container UIElement positioned relative to the container UIElement.
         public override void OnInitialize() {
             _request = new TerrariaRequest();
 
-            // Here we define our container UIElement. In DragableUIPanel.cs, you can see that DragableUIPanel is a UIPanel with a couple added features.
             _mainPanel = new DragableUIPanel();
-            _mainPanel.SetPadding(0);
-            // We need to place this UIElement in relation to its Parent. Later we will be calling `base.Append(coinCounterPanel);`. 
-            // This means that this class, MainUIState, will be our Parent. Since MainUIState is a UIState, the Left and Top are relative to the top left of the screen.
-            _mainPanel.Left.Set(400f, 0f);
-            _mainPanel.Top.Set(100f, 0f);
-            _mainPanel.Width.Set(170f, 0f);
-            _mainPanel.Height.Set(170f, 0f);
-            _mainPanel.BackgroundColor = new Color(73, 94, 171);
+            _mainPanel.SetPadding(General.Margin);
+            _mainPanel.Left.Set(Panel.InitLeft, 0f);
+            _mainPanel.Top.Set(Panel.InitTop, 0f);
+            _mainPanel.Width.Set(Panel.Width, 0f);
+            _mainPanel.Height.Set(Panel.Height, 0f);
+            _mainPanel.BackgroundColor = Panel.Color;
 
 
-            var closeTexture = ModContent.GetTexture(Textures.closeButton);
+            var closeTexture = ModContent.GetTexture("Terraria/Item_2735"); // this is an X
             var closeButton =
                 new UIHoverImageButton(closeTexture,
-                    Language.GetTextValue("LegacyInterface.52"));
-            closeButton.Left.Set(140, 0f);
-            closeButton.Top.Set(10, 0f);
-            closeButton.Width.Set(22, 0f);
-            closeButton.Height.Set(22, 0f);
+                    Language.GetTextValue("LegacyInterface.52")); // "close" with localisation
+            closeButton.Left.Set(Close.InitLeft, 0f);
+            closeButton.Top.Set(Close.InitTop, 0f);
+            closeButton.Width.Set(Close.Width, 0f);
+            closeButton.Height.Set(Close.Height, 0f);
             closeButton.OnClick += CloseButtonClicked;
             _mainPanel.Append(closeButton);
 
-            var upTexture = ModContent.GetTexture(Textures.VoteUp);
-            _sendRequestButton = new UIHoverImageButton(upTexture, "Send request");
-            _sendRequestButton.Left.Set(140, 0f);
-            _sendRequestButton.Top.Set(36, 0f);
-            _sendRequestButton.Width.Set(22, 0f);
-            _sendRequestButton.Height.Set(22, 0f);
+            var magnifTexture = ModContent.GetTexture("Terraria/Item_216"); // This is a magnifying glass
+            _sendRequestButton = new UIHoverImageButton(magnifTexture, "Send request");
+            _sendRequestButton.Left.Set(Request.InitLeft, 0f);
+            _sendRequestButton.Top.Set(Request.InitTop, 0f);
+            _sendRequestButton.Width.Set(Request.Width, 0f);
+            _sendRequestButton.Height.Set(Request.Height, 0f);
             _sendRequestButton.OnClick += RequestButtonClicked;
             _mainPanel.Append(_sendRequestButton);
 
 
             _vanillaItemSlot = new VanillaItemSlotWrapper(ItemSlot.Context.BankItem, 0.85f);
-            _vanillaItemSlot.Left.Set(20, 0);
-            _vanillaItemSlot.Top.Set(170 - _vanillaItemSlot.Height.Pixels, 0);
+            _vanillaItemSlot.Left.Set(ItemFrame.InitLeft, 0);
+            _vanillaItemSlot.Top.Set(ItemFrame.InitTop, 0);
             _vanillaItemSlot.ValidItemFunc = item => true;
 
             _mainPanel.Append(_vanillaItemSlot);
