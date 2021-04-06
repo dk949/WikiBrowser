@@ -1,0 +1,4 @@
+displayName = Wiki Browser
+author = Rigatavr
+version = 0.1
+dllReferences = 
