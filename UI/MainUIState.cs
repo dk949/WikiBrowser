@@ -23,6 +23,7 @@ namespace WikiBrowser.UI {
         public override void OnInitialize() {
             _request = new TerrariaRequest();
 
+            // TODO: this is studpid, move this somewhere else
             _mainPanel = new DragableUIPanel();
             _mainPanel.SetPadding(General.Margin);
             _mainPanel.Left.Set(Panel.InitLeft, 0f);
@@ -94,21 +95,10 @@ namespace WikiBrowser.UI {
                 ModContent.GetInstance<WikiBrowser>().Logger
                     .Info("####################Http task should have started######################");
                 var task = Task.Run(() => {
-                    string[] loadingAnim = {
-                        "Loading.", "Loading.", "Loading.",
-                        "Loading..", "Loading..", "Loading..",
-                        "Loading...", "Loading...", "Loading..."
-                    };
-                    var i = 0;
                     while (!_request.IsDone()) {
-                        _text.SetText(loadingAnim[i]);
-                        i %= loadingAnim.Length;
-                        Main.NewText("Still in task, request" + (_request.IsDone() ? " is done" : " is not done"));
+                        _text.SetText("Loading...");
+                        Main.NewText("Sending request");
                     }
-
-                    if (_request.Result() == null)
-                        ModContent.GetInstance<WikiBrowser>().Logger
-                            .Info("#######################Result obtained, but it is null######################");
 
                     _text.SetText(_request.Result());
                     ModContent.GetInstance<WikiBrowser>().Logger.Info("Task finished, page loaded");
