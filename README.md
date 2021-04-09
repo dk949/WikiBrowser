@@ -3,18 +3,13 @@
 ## Completed Features
 
 * Drop an item in a dialogue window to get its wiki page
-
-## Required bugfixes:
-
 * String wrapping
-    * There is currently no wrapping, each paragraph is a long string going off screen.
 * Pagination
-    * The text just goes off the bottom of the screen
 * Background/frame
-    * Text is really hard to read without it
 
-## Missing features which could be considered to be bugs
+## Known bugs/missing features
 
+* Loaded articles should ave titles
 * If an Item does not have an individual page nothing is loaded.
     * E.g. "Chlorophyte Mask" should redirect to "Chlorophyte armor", but currently does not.
 * Some sections are blank.
