@@ -1,10 +1,9 @@
-using WikiBrowser.UI;
-using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.UI;
-
+using WikiBrowser.UI;
 
 namespace WikiBrowser {
     public class WikiBrowser : Mod {
@@ -22,17 +21,6 @@ namespace WikiBrowser {
         // inside the references folder. You do not have to add this to build.txt as tML has it natively.
         // internal ILog Logging = LogManager.GetLogger("ExampleMod");
 
-        public WikiBrowser() {
-            // By default, all Autoload properties are True. You only need to change this if you know what you are doing.
-            //Properties = new ModProperties()
-            //{
-            //	Autoload = true,
-            //	AutoloadGores = true,
-            //	AutoloadSounds = true,
-            //	AutoloadBackgrounds = true
-            //};
-        }
-
         public override void Load() {
             // Will show up in client.log
             Logger.InfoFormat("{0} ogging", Name);
@@ -46,7 +34,6 @@ namespace WikiBrowser {
 
             // All code below runs only if we're not loading on a server
             if (!Main.dedServ) {
-
                 // Custom UI
                 UiState = new MainUIState();
                 UiState.Activate();
@@ -74,26 +61,20 @@ namespace WikiBrowser {
 
 
         public override void UpdateUI(GameTime gameTime) {
-            if (MainUIState.Visible) {
-                _panelInterface?.Update(gameTime);
-            }
+            if (MainUIState.Visible) _panelInterface?.Update(gameTime);
         }
 
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
-            int mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
-            if (mouseTextIndex != -1) {
+            var mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Body"));
+            if (mouseTextIndex != -1)
                 layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
                     "ExampleMod: Coins Per Minute",
                     delegate {
-                        if (MainUIState.Visible) {
-                            _panelInterface.Draw(Main.spriteBatch, new GameTime());
-                        }
+                        if (MainUIState.Visible) _panelInterface.Draw(Main.spriteBatch, new GameTime());
                         return true;
                     },
                     InterfaceScaleType.UI)
                 );
-            }
         }
     }
 }
-

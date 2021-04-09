@@ -16,8 +16,10 @@ namespace WikiBrowser.UI {
 
         private DragableUIPanel _mainPanel;
         private TerrariaRequest _request;
+        private string _title;
 
-        private UIText _text;
+        private UIText _uiBody;
+        private UIText _uiTitle;
         private VanillaItemSlotWrapper _vanillaItemSlot;
 
         public override void OnInitialize() {
@@ -79,14 +81,21 @@ namespace WikiBrowser.UI {
 
             _mainPanel.Append(_vanillaItemSlot);
 
+            _title = "";
+            _uiTitle = new UIText("");
+            _uiTitle.Left.Set(Title.InitLeft, 0);
+            _uiTitle.Top.Set(Title.InitTop, 0);
+            _uiTitle.Height.Set(Title.Height, 0);
+            _uiTitle.Width.Set(Title.Width, 0);
+            _mainPanel.Append(_uiTitle);
 
             _body = new PagedString();
-            _text = new UIText("");
-            _text.Left.Set(Text.InitLeft, 0);
-            _text.Top.Set(Text.InitTop, 0);
-            _text.Height.Set(Text.Height, 0);
-            _text.Width.Set(Text.Width, 0);
-            _mainPanel.Append(_text);
+            _uiBody = new UIText("");
+            _uiBody.Left.Set(Body.InitLeft, 0);
+            _uiBody.Top.Set(Body.InitTop, 0);
+            _uiBody.Height.Set(Body.Height, 0);
+            _uiBody.Width.Set(Body.Width, 0);
+            _mainPanel.Append(_uiBody);
 
             Append(_mainPanel);
         }
@@ -100,20 +109,22 @@ namespace WikiBrowser.UI {
                 _vanillaItemSlot.Item.TurnToAir();
             }
 
-            _text.SetText("");
+            _uiBody.SetText("");
             Visible = false;
         }
 
         private void RequestButtonClicked(UIMouseEvent evt, UIElement listeningElement) {
             if (_vanillaItemSlot.Item.IsAir) {
-                _text.SetText("No Item");
+                _uiBody.SetText("No Item");
             } else {
                 _request.GetItem(_vanillaItemSlot.Item);
                 var task = Task.Run(() => {
-                    while (!_request.IsDone()) _text.SetText("Loading...");
+                    while (!_request.IsDone()) _uiBody.SetText("Loading...");
 
-                    _body.Pages = _request.Result();
-                    _text.SetText(_body.GetPage());
+                    _title = _request.Result().Title;
+                    _uiTitle.SetText(_title);
+                    _body.Pages = _request.Result().Body;
+                    _uiBody.SetText(_body.GetPage());
                     ModContent.GetInstance<WikiBrowser>().Logger.Info("Task finished, page loaded");
                 });
             }
@@ -121,12 +132,12 @@ namespace WikiBrowser.UI {
 
         private void PageUpClicked(UIMouseEvent evt, UIElement listeningElement) {
             _body.CurrentPage = _body.CurrentPage <= 0 ? 0 : _body.CurrentPage - 1;
-            _text.SetText(_body.GetPage());
+            _uiBody.SetText(_body.GetPage());
         }
 
         private void PageDownClicked(UIMouseEvent evt, UIElement listeningElement) {
             _body.CurrentPage = _body.CurrentPage >= _body.Count() - 1 ? _body.Count() - 1 : _body.CurrentPage + 1;
-            _text.SetText(_body.GetPage());
+            _uiBody.SetText(_body.GetPage());
         }
     }
 }

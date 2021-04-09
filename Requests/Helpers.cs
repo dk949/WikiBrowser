@@ -34,5 +34,9 @@ namespace WikiBrowser.Requests {
             sb.AppendFormat("titles={0}", FormatItemName(item));
             return sb.ToString();
         }
+
+        public static string GetTitle(string json) {
+            return JsonConvert.DeserializeObject<JObject>(json).SelectToken("$..title").ToString();
+        }
     }
 }
