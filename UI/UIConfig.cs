@@ -12,7 +12,7 @@ namespace WikiBrowser.UI {
         public struct Panel {
             public const float InitLeft = 600;
             public const float InitTop = 100;
-            public const float Width = 720;
+            public const float Width = 600;
             public const float Height = 600;
 
             public static readonly Color Color = new Color(73, 94, 171, 200);
@@ -32,10 +32,31 @@ namespace WikiBrowser.UI {
             public const float Height = General.IconHeight;
         }
 
+        public struct UpButton {
+            public const float InitLeft = 0;
+            public const float InitTop = 60;
+            public const float Width = General.IconWidth;
+            public const float Height = General.IconHeight;
+        }
+
+        public struct DownButton {
+            public const float InitLeft = 0;
+            public const float InitTop = UpButton.InitTop + General.Margin;
+            public const float Width = General.IconWidth;
+            public const float Height = General.IconHeight;
+        }
+
 
         public struct ItemFrame {
             public const float InitLeft = 0;
             public const float InitTop = 0;
+        }
+
+        public struct Text {
+            public const float InitLeft = General.IconWidth + General.IconGaps;
+            public const float InitTop = 60;
+            public const float Width = 70;
+            public const float Height = 500;
         }
     }
 }

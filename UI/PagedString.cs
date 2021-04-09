@@ -1,18 +1,20 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Terraria.ModLoader;
 
-namespace WikiBrowser.CustomUIElement {
+namespace WikiBrowser.UI {
     public class PagedString {
-        private const int PageLength = 2000; // characters
-        private const int LineLength = 300;
+        private const int PageLength = 15; // lines
+        private const int LineLength = 50;
         private IEnumerable<string> _pages;
         public int CurrentPage;
 
         public PagedString(string body) {
             _pages = FromString(body);
+        }
+
+        public PagedString() {
+            _pages = new List<string>();
         }
 
 
@@ -26,18 +28,20 @@ namespace WikiBrowser.CustomUIElement {
 
 
         private static IEnumerable<string> FromString(string body) {
-            var lines = body.Section(LineLength, " ");
-            var joinedLines = string.Join("\n", lines);
-            var pages = joinedLines.Section(PageLength, " ");
-            return pages;
+            var paragraphs = body.Split('\n');
+            var lines = new List<string>();
+
+            foreach (var paragraph in paragraphs) lines.AddRange(paragraph.Section(LineLength, " "));
+
+            var parts = lines.Partition(PageLength);
+
+            return parts.Select(part => string.Join("\n", part)).ToList();
         }
 
         public string GetPage() {
-            ModContent.GetInstance<WikiBrowser>().Logger.Info("Current page = " + CurrentPage);
-            ModContent.GetInstance<WikiBrowser>().Logger.Info("_pages.Count() = " + _pages.Count());
-            if (_pages == null) ModContent.GetInstance<WikiBrowser>().Logger.Info("_pages has not been initialized");
-
-            return !_pages.Any() ? "" : _pages.ElementAt(CurrentPage);
+            if (_pages != null)
+                return !_pages.Any() ? "" : _pages.ElementAt(CurrentPage);
+            return "";
         }
 
         public int Count() {
@@ -46,28 +50,6 @@ namespace WikiBrowser.CustomUIElement {
 
         public IEnumerator GetEnumerator() {
             return _pages.GetEnumerator();
-        }
-    }
-
-    internal static class StringExtension {
-        public static IEnumerable<string> Section(this string text, int charsPerPage, string breakChar) {
-            var count = 0;
-            var start = 0;
-            while (count < text.Length) {
-                count = Math.Min(text.Length, count + charsPerPage);
-                if (count == text.Length) {
-                    yield return text.Substring(start, count - start);
-                } else {
-                    var nextBreak = text.IndexOf(breakChar, count, StringComparison.Ordinal);
-                    if (nextBreak == -1) {
-                        yield return text.Substring(start, count - start);
-                        start = count + breakChar.Length;
-                    } else {
-                        yield return text.Substring(start, nextBreak - start);
-                        start = nextBreak + breakChar.Length;
-                    }
-                }
-            }
         }
     }
 }

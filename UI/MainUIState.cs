@@ -12,11 +12,11 @@ namespace WikiBrowser.UI {
     // MainUIState's visibility is toggled by typing "/test" in chat. (See TestCommand.cs)
     internal class MainUIState : UIState {
         public static bool Visible;
+        private PagedString _body;
 
         private DragableUIPanel _mainPanel;
         private TerrariaRequest _request;
 
-        private UIHoverImageButton _sendRequestButton;
         private UIText _text;
         private VanillaItemSlotWrapper _vanillaItemSlot;
 
@@ -45,14 +45,32 @@ namespace WikiBrowser.UI {
             _mainPanel.Append(closeButton);
 
             var magnifTexture = ModContent.GetTexture("Terraria/Item_216"); // This is a magnifying glass
-            _sendRequestButton = new UIHoverImageButton(magnifTexture, "Send request");
-            _sendRequestButton.Left.Set(Request.InitLeft, 0f);
-            _sendRequestButton.Top.Set(Request.InitTop, 0f);
-            _sendRequestButton.Width.Set(Request.Width, 0f);
-            _sendRequestButton.Height.Set(Request.Height, 0f);
-            _sendRequestButton.OnClick += RequestButtonClicked;
-            _mainPanel.Append(_sendRequestButton);
+            var sendRequestButton = new UIHoverImageButton(magnifTexture, "Search");
+            sendRequestButton.Left.Set(Request.InitLeft, 0f);
+            sendRequestButton.Top.Set(Request.InitTop, 0f);
+            sendRequestButton.Width.Set(Request.Width, 0f);
+            sendRequestButton.Height.Set(Request.Height, 0f);
+            sendRequestButton.OnClick += RequestButtonClicked;
+            _mainPanel.Append(sendRequestButton);
 
+            var upTexture = ModContent.GetTexture(Textures.VoteUp);
+            var upButton = new UIHoverImageButton(upTexture, "Page Up");
+            upButton.Left.Set(UpButton.InitLeft, 0f);
+            upButton.Top.Set(UpButton.InitTop, 0f);
+            upButton.Width.Set(UpButton.Width, 0f);
+            upButton.Height.Set(UpButton.Height, 0f);
+            upButton.OnClick += PageUpClicked;
+            _mainPanel.Append(upButton);
+
+
+            var downTexture = ModContent.GetTexture(Textures.VoteDown);
+            var downButton = new UIHoverImageButton(downTexture, "Page Down");
+            downButton.Left.Set(DownButton.InitLeft, 0f);
+            downButton.Top.Set(DownButton.InitTop, 0f);
+            downButton.Width.Set(DownButton.Width, 0f);
+            downButton.Height.Set(DownButton.Height, 0f);
+            downButton.OnClick += PageDownClicked;
+            _mainPanel.Append(downButton);
 
             _vanillaItemSlot = new VanillaItemSlotWrapper(ItemSlot.Context.BankItem, 0.85f);
             _vanillaItemSlot.Left.Set(ItemFrame.InitLeft, 0);
@@ -62,11 +80,12 @@ namespace WikiBrowser.UI {
             _mainPanel.Append(_vanillaItemSlot);
 
 
-            _text = new UIText("Here is a different text");
-            _text.Left.Set(20, 0);
-            _text.Top.Set(260, 0);
-            _text.Height.Set(70, 0);
-            _text.Width.Set(150, 0);
+            _body = new PagedString();
+            _text = new UIText("");
+            _text.Left.Set(Text.InitLeft, 0);
+            _text.Top.Set(Text.InitTop, 0);
+            _text.Height.Set(Text.Height, 0);
+            _text.Width.Set(Text.Width, 0);
             _mainPanel.Append(_text);
 
             Append(_mainPanel);
@@ -86,24 +105,28 @@ namespace WikiBrowser.UI {
         }
 
         private void RequestButtonClicked(UIMouseEvent evt, UIElement listeningElement) {
-            // This was something to do with ModPlayer
-            Main.NewText("Sending Request");
             if (_vanillaItemSlot.Item.IsAir) {
                 _text.SetText("No Item");
             } else {
                 _request.GetItem(_vanillaItemSlot.Item);
-                ModContent.GetInstance<WikiBrowser>().Logger
-                    .Info("####################Http task should have started######################");
                 var task = Task.Run(() => {
-                    while (!_request.IsDone()) {
-                        _text.SetText("Loading...");
-                        Main.NewText("Sending request");
-                    }
+                    while (!_request.IsDone()) _text.SetText("Loading...");
 
-                    _text.SetText(_request.Result());
+                    _body.Pages = _request.Result();
+                    _text.SetText(_body.GetPage());
                     ModContent.GetInstance<WikiBrowser>().Logger.Info("Task finished, page loaded");
                 });
             }
+        }
+
+        private void PageUpClicked(UIMouseEvent evt, UIElement listeningElement) {
+            _body.CurrentPage = _body.CurrentPage <= 0 ? 0 : _body.CurrentPage - 1;
+            _text.SetText(_body.GetPage());
+        }
+
+        private void PageDownClicked(UIMouseEvent evt, UIElement listeningElement) {
+            _body.CurrentPage = _body.CurrentPage >= _body.Count() - 1 ? _body.Count() - 1 : _body.CurrentPage + 1;
+            _text.SetText(_body.GetPage());
         }
     }
 }

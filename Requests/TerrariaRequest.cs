@@ -16,13 +16,10 @@ namespace WikiBrowser.Requests {
         }
 
         public string Result() {
-            if (IsDone()) {
-                var extract =
-                    Helpers.GetExtract(_task.Result);
-                return extract ?? "Extract is null?";
-            }
-
-            return "Awaiting result";
+            if (!IsDone()) return "Awaiting result";
+            var extract =
+                Helpers.GetExtract(_task.Result);
+            return extract ?? "Extract is null?";
         }
 
 
