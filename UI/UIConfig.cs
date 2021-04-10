@@ -52,11 +52,18 @@ namespace WikiBrowser.UI {
             public const float InitTop = 0;
         }
 
-        public struct Text {
+        public struct Body {
             public const float InitLeft = General.IconWidth + General.IconGaps;
             public const float InitTop = 60;
             public const float Width = 70;
             public const float Height = 500;
+        }
+
+        public struct Title {
+            public const float InitLeft = General.IconWidth + General.IconGaps;
+            public const float InitTop = 0;
+            public const float Width = Panel.Width - InitLeft * 2;
+            public const float Height = 10;
         }
     }
 }

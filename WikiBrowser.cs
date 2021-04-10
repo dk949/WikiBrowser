@@ -46,7 +46,6 @@ namespace WikiBrowser {
 
             // All code below runs only if we're not loading on a server
             if (!Main.dedServ) {
-
                 // Custom UI
                 UiState = new MainUIState();
                 UiState.Activate();
@@ -88,6 +87,7 @@ namespace WikiBrowser {
                         if (MainUIState.Visible) {
                             _panelInterface.Draw(Main.spriteBatch, new GameTime());
                         }
+
                         return true;
                     },
                     InterfaceScaleType.UI)
@@ -96,4 +96,3 @@ namespace WikiBrowser {
         }
     }
 }
-
