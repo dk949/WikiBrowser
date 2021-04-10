@@ -109,6 +109,7 @@ namespace WikiBrowser.UI {
                 _vanillaItemSlot.Item.TurnToAir();
             }
 
+            _uiTitle.SetText("");
             _uiBody.SetText("");
             Visible = false;
         }

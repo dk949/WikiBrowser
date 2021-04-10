@@ -1,9 +1,10 @@
-using System.Collections.Generic;
+using WikiBrowser.UI;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.UI;
-using WikiBrowser.UI;
+
 
 namespace WikiBrowser {
     public class WikiBrowser : Mod {
@@ -20,6 +21,17 @@ namespace WikiBrowser {
         // You need to reference the log4net library to do this, this can be found in the tModLoader repository
         // inside the references folder. You do not have to add this to build.txt as tML has it natively.
         // internal ILog Logging = LogManager.GetLogger("ExampleMod");
+
+        public WikiBrowser() {
+            // By default, all Autoload properties are True. You only need to change this if you know what you are doing.
+            //Properties = new ModProperties()
+            //{
+            //	Autoload = true,
+            //	AutoloadGores = true,
+            //	AutoloadSounds = true,
+            //	AutoloadBackgrounds = true
+            //};
+        }
 
         public override void Load() {
             // Will show up in client.log
@@ -61,20 +73,26 @@ namespace WikiBrowser {
 
 
         public override void UpdateUI(GameTime gameTime) {
-            if (MainUIState.Visible) _panelInterface?.Update(gameTime);
+            if (MainUIState.Visible) {
+                _panelInterface?.Update(gameTime);
+            }
         }
 
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
-            var mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Body"));
-            if (mouseTextIndex != -1)
+            int mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
+            if (mouseTextIndex != -1) {
                 layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
                     "ExampleMod: Coins Per Minute",
                     delegate {
-                        if (MainUIState.Visible) _panelInterface.Draw(Main.spriteBatch, new GameTime());
+                        if (MainUIState.Visible) {
+                            _panelInterface.Draw(Main.spriteBatch, new GameTime());
+                        }
+
                         return true;
                     },
                     InterfaceScaleType.UI)
                 );
+            }
         }
     }
 }

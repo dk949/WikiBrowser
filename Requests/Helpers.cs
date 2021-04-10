@@ -20,6 +20,10 @@ namespace WikiBrowser.Requests {
             return JsonConvert.DeserializeObject<JObject>(json).SelectToken("$..extract").ToString();
         }
 
+        public static string GetTitle(string json) {
+            return JsonConvert.DeserializeObject<JObject>(json).SelectToken("$..title").ToString();
+        }
+
 
         public static string FormatItemName(string item) {
             return item.Replace(' ', '_');
@@ -33,10 +37,6 @@ namespace WikiBrowser.Requests {
 
             sb.AppendFormat("titles={0}", FormatItemName(item));
             return sb.ToString();
-        }
-
-        public static string GetTitle(string json) {
-            return JsonConvert.DeserializeObject<JObject>(json).SelectToken("$..title").ToString();
         }
     }
 }
