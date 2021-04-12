@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using log4net.Repository.Hierarchy;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
@@ -7,6 +8,7 @@ using Terraria.ModLoader;
 using Terraria.UI;
 using WikiBrowser.Requests;
 using static WikiBrowser.UI.UiConfig;
+using static WikiBrowser.Logging;
 
 namespace WikiBrowser.UI {
     // MainUIState's visibility is toggled by typing "/test" in chat. (See TestCommand.cs)
@@ -115,21 +117,18 @@ namespace WikiBrowser.UI {
         }
 
         private void RequestButtonClicked(UIMouseEvent evt, UIElement listeningElement) {
-            ModContent.GetInstance<WikiBrowser>().Logger.Info("Started request");
+            Log("Started request", LogType.Info);
             if (_vanillaItemSlot.Item.IsAir) {
                 _uiBody.SetText("No Item");
             } else {
-                ModContent.GetInstance<WikiBrowser>().Logger.Info("About to call GetItem");
                 _request.GetItem(_vanillaItemSlot.Item);
-                ModContent.GetInstance<WikiBrowser>().Logger.Info("Successfully called GetItem");
                 var task = Task.Run(() => {
                     while (!_request.IsDone()) _uiBody.SetText("Loading...");
-
                     _title = _request.Result().Title;
                     _uiTitle.SetText(_title);
                     _body.Pages = _request.Result().Body;
                     _uiBody.SetText(_body.GetPage());
-                    ModContent.GetInstance<WikiBrowser>().Logger.Info("Task finished, page loaded");
+                    Log("Task finished, page loaded", LogType.Info);
                 });
             }
         }
