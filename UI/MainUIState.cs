@@ -115,10 +115,13 @@ namespace WikiBrowser.UI {
         }
 
         private void RequestButtonClicked(UIMouseEvent evt, UIElement listeningElement) {
+            ModContent.GetInstance<WikiBrowser>().Logger.Info("Started request");
             if (_vanillaItemSlot.Item.IsAir) {
                 _uiBody.SetText("No Item");
             } else {
+                ModContent.GetInstance<WikiBrowser>().Logger.Info("About to call GetItem");
                 _request.GetItem(_vanillaItemSlot.Item);
+                ModContent.GetInstance<WikiBrowser>().Logger.Info("Successfully called GetItem");
                 var task = Task.Run(() => {
                     while (!_request.IsDone()) _uiBody.SetText("Loading...");
 
