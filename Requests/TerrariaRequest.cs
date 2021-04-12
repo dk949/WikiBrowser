@@ -1,13 +1,17 @@
 ﻿using System.Threading.Tasks;
-using Terraria;
 
 namespace WikiBrowser.Requests {
     public class TerrariaRequest {
         private Task<string> _task;
-        private static readonly HttpRequest HttpRequest = new HttpRequest();
 
         private static string GetItemTask(Task<string> data) {
             var item = Helpers.GetTrueItemName(data.Result);
+            if (item == null) {
+                // This is very hacky, I am making a fake Json string Which should get processed like all the others
+                return
+                    @"{""extract"":""                   ¯\\_(⊙^⊙)_/¯           "", ""title"":""Page could not be found.""}";
+            }
+
             var task = HttpRequest.Get(item, Helpers.BaseUri, Helpers.RequestType.GetItem);
             return task.Result;
         }

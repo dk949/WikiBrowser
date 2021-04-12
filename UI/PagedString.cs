@@ -24,7 +24,7 @@ namespace WikiBrowser.UI {
         }
 
 
-        public string this[int i] => _pages.ElementAt(i); // handle errors on consumer side
+        public string this[int i] => _pages.ElementAt(i); // Maybe I'll use this some day?
 
 
         private static IEnumerable<string> FromString(string body) {

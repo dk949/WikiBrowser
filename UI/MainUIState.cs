@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using log4net.Repository.Hierarchy;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
@@ -11,7 +10,7 @@ using static WikiBrowser.UI.UiConfig;
 using static WikiBrowser.Logging;
 
 namespace WikiBrowser.UI {
-    // MainUIState's visibility is toggled by typing "/test" in chat. (See TestCommand.cs)
+    // MainUIState's visibility is toggled by typing "/wiki" in chat. (See WikiCommand.cs)
     internal class MainUIState : UIState {
         public static bool Visible;
 

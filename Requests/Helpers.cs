@@ -53,6 +53,8 @@ namespace WikiBrowser.Requests {
         }
 
         public static string FormUri(string item, string baseUri, RequestType type) {
+            Log(item ?? "item is null in FormUri", LogType.Info);
+            Log(baseUri ?? "baseUri is null in FormUri", LogType.Info);
             var sb = new StringBuilder(baseUri);
             sb.Append('?');
 

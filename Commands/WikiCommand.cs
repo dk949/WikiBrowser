@@ -1,5 +1,4 @@
-﻿using Terraria;
-using Terraria.ModLoader;
+﻿using Terraria.ModLoader;
 using WikiBrowser.UI;
 using static WikiBrowser.Logging;
 
