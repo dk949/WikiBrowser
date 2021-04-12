@@ -6,12 +6,12 @@
 * String wrapping
 * Pagination
 * Background/frame
+* Loaded articles should have titles
+* If an Item does not have an individual page the closest page is loaded
+    * E.g. "Chlorophyte Mask" should redirect to "Chlorophyte armor"
+* Added vesion log
 
 ## Known bugs/missing features
-
-* Loaded articles should ave titles
-* If an Item does not have an individual page nothing is loaded.
-    * E.g. "Chlorophyte Mask" should redirect to "Chlorophyte armor", but currently does not.
 * Some sections are blank.
     * "== Crafting ==" is always blank
 * Whenever there are are differences between versions, on the wiki they are displayed as
@@ -29,3 +29,15 @@
 * Allow the user to type the name of an item/npc if they can't place them in the window.
 * (maybe) allow hovering over items/NPCs and pressing a key to get the article about the thing under the cursor
 
+## Version Log
+== 0.1-alpha ==  
+Articles can be loaded into a custom UI by putting an Item in item frame
+
+== 0.2-alpha ==  
+Text is formatted (wrapped and split into pages)
+
+== 0.2.1-alpha ==  
+Added titles
+
+== 0.3-alpha ==  
+Added an extra request to search for the item if an individual page does not exist
