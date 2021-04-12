@@ -14,6 +14,7 @@ namespace WikiBrowser.UI {
     // MainUIState's visibility is toggled by typing "/test" in chat. (See TestCommand.cs)
     internal class MainUIState : UIState {
         public static bool Visible;
+
         private PagedString _body;
 
         private DragableUIPanel _mainPanel;
@@ -67,7 +68,7 @@ namespace WikiBrowser.UI {
             _mainPanel.Append(upButton);
 
 
-            var downTexture = ModContent.GetTexture(Textures.PageUp);
+            var downTexture = ModContent.GetTexture(Textures.PageDown);
             var downButton = new UIHoverImageButton(downTexture, "");
             downButton.Left.Set(DownButton.InitLeft, 0f);
             downButton.Top.Set(DownButton.InitTop, 0f);
@@ -111,6 +112,7 @@ namespace WikiBrowser.UI {
                 _vanillaItemSlot.Item.TurnToAir();
             }
 
+            //TODO: make this part configurable?
             _uiTitle.SetText("");
             _uiBody.SetText("");
             Visible = false;
@@ -120,17 +122,22 @@ namespace WikiBrowser.UI {
             Log("Started request", LogType.Info);
             if (_vanillaItemSlot.Item.IsAir) {
                 _uiBody.SetText("No Item");
-            } else {
-                _request.GetItem(_vanillaItemSlot.Item);
-                var task = Task.Run(() => {
-                    while (!_request.IsDone()) _uiBody.SetText("Loading...");
-                    _title = _request.Result().Title;
-                    _uiTitle.SetText(_title);
-                    _body.Pages = _request.Result().Body;
-                    _uiBody.SetText(_body.GetPage());
-                    Log("Task finished, page loaded", LogType.Info);
-                });
+                return;
             }
+
+            PerformRequest(_vanillaItemSlot.Item.Name);
+        }
+
+        public void PerformRequest(string item) {
+            _request.GetItem(item);
+            var task = Task.Run(() => {
+                while (!_request.IsDone()) _uiBody.SetText("Loading...");
+                _title = _request.Result().Title;
+                _uiTitle.SetText(_title);
+                _body.Pages = _request.Result().Body;
+                _uiBody.SetText(_body.GetPage());
+                Log("Task finished, page loaded", LogType.Info);
+            });
         }
 
         private void PageUpClicked(UIMouseEvent evt, UIElement listeningElement) {

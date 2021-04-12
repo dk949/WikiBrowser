@@ -54,7 +54,7 @@ namespace WikiBrowser {
             var mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
             if (mouseTextIndex != -1) {
                 layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
-                    "ExampleMod: Coins Per Minute",
+                    "WikiBrowser: Main Panel",
                     delegate {
                         if (MainUIState.Visible) {
                             _panelInterface.Draw(Main.spriteBatch, new GameTime());

@@ -12,8 +12,8 @@ namespace WikiBrowser.Requests {
             return task.Result;
         }
 
-        public void GetItem(Item item) {
-            _task = HttpRequest.Get(item.Name, Helpers.BaseUri, Helpers.RequestType.Search)
+        public void GetItem(string item) {
+            _task = HttpRequest.Get(item, Helpers.BaseUri, Helpers.RequestType.Search)
                 .ContinueWith(GetItemTask);
         }
 
