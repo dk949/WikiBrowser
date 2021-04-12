@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Terraria;
-using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -14,14 +13,11 @@ namespace WikiBrowser.UI {
     internal class MainUIState : UIState {
         public static bool Visible;
 
-        private PagedString _body;
+        private ArticleContainer _article;
 
         private DragableUIPanel _mainPanel;
         private TerrariaRequest _request;
-        private string _title;
 
-        private UIText _uiBody;
-        private UIText _uiTitle;
         private VanillaItemSlotWrapper _vanillaItemSlot;
 
         public override void OnInitialize() {
@@ -83,21 +79,12 @@ namespace WikiBrowser.UI {
 
             _mainPanel.Append(_vanillaItemSlot);
 
-            _title = "";
-            _uiTitle = new UIText("");
-            _uiTitle.Left.Set(Title.InitLeft, 0);
-            _uiTitle.Top.Set(Title.InitTop, 0);
-            _uiTitle.Height.Set(Title.Height, 0);
-            _uiTitle.Width.Set(Title.Width, 0);
-            _mainPanel.Append(_uiTitle);
-
-            _body = new PagedString();
-            _uiBody = new UIText("");
-            _uiBody.Left.Set(Body.InitLeft, 0);
-            _uiBody.Top.Set(Body.InitTop, 0);
-            _uiBody.Height.Set(Body.Height, 0);
-            _uiBody.Width.Set(Body.Width, 0);
-            _mainPanel.Append(_uiBody);
+            _article = new ArticleContainer();
+            _article.Left.Set(0, 0);
+            _article.Top.Set(0, 0);
+            _article.Width.Set(Panel.Width, 0);
+            _article.Height.Set(Panel.Height, 0);
+            _mainPanel.Append(_article);
 
             Append(_mainPanel);
         }
@@ -112,15 +99,16 @@ namespace WikiBrowser.UI {
             }
 
             //TODO: make this part configurable?
-            _uiTitle.SetText("");
-            _uiBody.SetText("");
+            _article.UiTitle = "";
+            _article.UiBody = "";
             Visible = false;
         }
 
         private void RequestButtonClicked(UIMouseEvent evt, UIElement listeningElement) {
             Log("Started request", LogType.Info);
             if (_vanillaItemSlot.Item.IsAir) {
-                _uiBody.SetText("No Item");
+                _article.UiTitle = "No Item";
+                _article.UiBody = "";
                 return;
             }
 
@@ -130,23 +118,23 @@ namespace WikiBrowser.UI {
         public void PerformRequest(string item) {
             _request.GetItem(item);
             var task = Task.Run(() => {
-                while (!_request.IsDone()) _uiBody.SetText("Loading...");
-                _title = _request.Result().Title;
-                _uiTitle.SetText(_title);
-                _body.Pages = _request.Result().Body;
-                _uiBody.SetText(_body.GetPage());
+                while (!_request.IsDone()) {
+                    _article.UiBody = "Loading...";
+                    _article.UiTitle = "";
+                }
+
+                _article.UiTitle = _request.Result().Title;
+                _article.UiBody = _request.Result().Body;
                 Log("Task finished, page loaded", LogType.Info);
             });
         }
 
         private void PageUpClicked(UIMouseEvent evt, UIElement listeningElement) {
-            _body.CurrentPage = _body.CurrentPage <= 0 ? 0 : _body.CurrentPage - 1;
-            _uiBody.SetText(_body.GetPage());
+            _article.PrevPage();
         }
 
         private void PageDownClicked(UIMouseEvent evt, UIElement listeningElement) {
-            _body.CurrentPage = _body.CurrentPage >= _body.Count() - 1 ? _body.Count() - 1 : _body.CurrentPage + 1;
-            _uiBody.SetText(_body.GetPage());
+            _article.NextPage();
         }
     }
 }
