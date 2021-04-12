@@ -2,68 +2,75 @@
 
 namespace WikiBrowser.UI {
     public static class UiConfig {
+        public static readonly UiElementConfig Panel = new UiElementConfig {
+            InitLeft = 600,
+            InitTop = 100,
+            Width = 620,
+            Height = 600
+        };
+
+        public static readonly UiElementConfig Close = new UiElementConfig {
+            InitLeft = Panel.Width - General.IconWidth - General.Margin,
+            InitTop = 0,
+            Width = General.IconWidth,
+            Height = General.IconHeight
+        };
+
+        public static readonly UiElementConfig Request = new UiElementConfig {
+            InitLeft = Panel.Width - General.IconWidth - General.Margin,
+            InitTop = Close.Height + General.IconGaps,
+            Width = General.IconWidth,
+            Height = General.IconHeight
+        };
+
+        public static readonly UiElementConfig UpButton = new UiElementConfig {
+            InitLeft = 0,
+            InitTop = 60,
+            Width = General.IconWidth,
+            Height = General.IconHeight
+        };
+
+        public static readonly UiElementConfig DownButton = new UiElementConfig {
+            InitLeft = 0,
+            InitTop = UpButton.InitTop + General.Margin,
+            Width = General.IconWidth,
+            Height = General.IconHeight
+        };
+
+        public static readonly UiElementConfig ItemFrame = new UiElementConfig {
+            InitLeft = 0,
+            InitTop = 0,
+            Width = 0, // Item frames' width and height are constant, these fields have no meaning
+            Height = 0
+        };
+
+        public static readonly UiElementConfig Body = new UiElementConfig {
+            InitLeft = General.IconWidth + General.IconGaps,
+            InitTop = 60,
+            Width = 70,
+            Height = 500
+        };
+
+        public static readonly UiElementConfig Title = new UiElementConfig {
+            InitLeft = 0,
+            InitTop = 0,
+            Width = Panel.Width,
+            Height = 10
+        };
+
         public struct General {
             public const float IconWidth = 40;
             public const float IconHeight = 40;
             public const float IconGaps = 15;
             public const float Margin = 30;
+            public static readonly Color PanelBgColor = new Color(73, 94, 171, 200);
         }
 
-        public struct Panel {
-            public const float InitLeft = 600;
-            public const float InitTop = 100;
-            public const float Width = 620;
-            public const float Height = 600;
-
-            public static readonly Color Color = new Color(73, 94, 171, 200);
-        }
-
-        public struct Close {
-            public const float InitLeft = Panel.Width - Width - General.Margin;
-            public const float InitTop = 0;
-            public const float Width = General.IconWidth;
-            public const float Height = General.IconHeight;
-        }
-
-        public struct Request {
-            public const float InitLeft = Panel.Width - Width - General.Margin;
-            public const float InitTop = Close.Height + General.IconGaps;
-            public const float Width = General.IconWidth;
-            public const float Height = General.IconHeight;
-        }
-
-        public struct UpButton {
-            public const float InitLeft = 0;
-            public const float InitTop = 60;
-            public const float Width = General.IconWidth;
-            public const float Height = General.IconHeight;
-        }
-
-        public struct DownButton {
-            public const float InitLeft = 0;
-            public const float InitTop = UpButton.InitTop + General.Margin;
-            public const float Width = General.IconWidth;
-            public const float Height = General.IconHeight;
-        }
-
-
-        public struct ItemFrame {
-            public const float InitLeft = 0;
-            public const float InitTop = 0;
-        }
-
-        public struct Body {
-            public const float InitLeft = General.IconWidth + General.IconGaps;
-            public const float InitTop = 60;
-            public const float Width = 70;
-            public const float Height = 500;
-        }
-
-        public struct Title {
-            public const float InitLeft = 0;
-            public const float InitTop = 0;
-            public const float Width = Panel.Width - InitLeft * 2;
-            public const float Height = 10;
+        public struct UiElementConfig {
+            public float InitLeft;
+            public float InitTop;
+            public float Width;
+            public float Height;
         }
     }
 }

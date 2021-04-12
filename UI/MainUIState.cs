@@ -34,7 +34,7 @@ namespace WikiBrowser.UI {
             _mainPanel.Top.Set(Panel.InitTop, 0f);
             _mainPanel.Width.Set(Panel.Width, 0f);
             _mainPanel.Height.Set(Panel.Height, 0f);
-            _mainPanel.BackgroundColor = Panel.Color;
+            _mainPanel.BackgroundColor = General.PanelBgColor;
 
 
             var closeTexture = ModContent.GetTexture("Terraria/Item_2735"); // this is an X
