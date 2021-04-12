@@ -57,8 +57,8 @@ namespace WikiBrowser.UI {
             sendRequestButton.OnClick += RequestButtonClicked;
             _mainPanel.Append(sendRequestButton);
 
-            var upTexture = ModContent.GetTexture(Textures.VoteUp);
-            var upButton = new UIHoverImageButton(upTexture, "Page Up");
+            var upTexture = ModContent.GetTexture(Textures.PageUp);
+            var upButton = new UIHoverImageButton(upTexture, "");
             upButton.Left.Set(UpButton.InitLeft, 0f);
             upButton.Top.Set(UpButton.InitTop, 0f);
             upButton.Width.Set(UpButton.Width, 0f);
@@ -67,8 +67,8 @@ namespace WikiBrowser.UI {
             _mainPanel.Append(upButton);
 
 
-            var downTexture = ModContent.GetTexture(Textures.VoteDown);
-            var downButton = new UIHoverImageButton(downTexture, "Page Down");
+            var downTexture = ModContent.GetTexture(Textures.PageUp);
+            var downButton = new UIHoverImageButton(downTexture, "");
             downButton.Left.Set(DownButton.InitLeft, 0f);
             downButton.Top.Set(DownButton.InitTop, 0f);
             downButton.Width.Set(DownButton.Width, 0f);
