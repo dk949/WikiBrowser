@@ -1,5 +1,15 @@
 # WikiReader mod for tModLoader
 
+## How this works
+
+* Open the console (Enter)
+* Type /wiki to get a blank window with an item slot
+    * Place an item into the slot to get its page
+    * IMPORTANT: Remove the item from the slot before closing the game. Closing the window will automatically return the
+      item to the player, but closing the game will remove it.
+* Alternatively type /wiki [Search term]. If a page exists or a similar one can be found, it will show up.
+    * Note: spaces are allowed, as well as any capitalisation.
+
 ## Completed Features
 
 * Drop an item in a dialogue window to get its wiki page
@@ -9,9 +19,12 @@
 * Loaded articles should have titles
 * If an Item does not have an individual page the closest page is loaded
     * E.g. "Chlorophyte Mask" should redirect to "Chlorophyte armor"
-* Added vesion log
+* Version log
+* Allow the user to type the name of an item/npc if they can't place them in the window.
 
 ## Known bugs/missing features
+
+* If an item is still in the slot when the game is closed (via crash or by the user), the item will be lost
 * Some sections are blank.
     * "== Crafting ==" is always blank
 * Whenever there are are differences between versions, on the wiki they are displayed as
@@ -26,18 +39,22 @@
 
 ## Nice-to-have features
 
-* Allow the user to type the name of an item/npc if they can't place them in the window.
 * (maybe) allow hovering over items/NPCs and pressing a key to get the article about the thing under the cursor
 
 ## Version Log
-== 0.1-alpha ==  
-Articles can be loaded into a custom UI by putting an Item in item frame
 
-== 0.2-alpha ==  
-Text is formatted (wrapped and split into pages)
+== 0.4-alpha == Changed command to /wiki [Item name]
+Added handling for pages which could not be found using search
+
+== 0.3-alpha ==  
+Added an extra request to search for the item if an individual page does not exist Added version log
 
 == 0.2.1-alpha ==  
 Added titles
 
-== 0.3-alpha ==  
-Added an extra request to search for the item if an individual page does not exist
+== 0.2-alpha ==  
+Text is formatted (wrapped and split into pages)
+
+== 0.1-alpha ==  
+Articles can be loaded into a custom UI by putting an Item in item frame
+
