@@ -39,11 +39,18 @@
 
 ## Nice-to-have features
 
-* (maybe) allow hovering over items/NPCs and pressing a key to get the article about the thing under the cursor
+* allow hovering over items/NPCs and pressing a key to get the article about the thing under the cursor
+* add crafting hints (these can't be loaded from the wiki the way I'm doing it now, but maybe I can make a simpler
+  version of recipe browser?)
+* add a mode where info is not loaded from the wiki and it just displays stats that are available in the game
 
 ## Version Log
 
-== 0.4-alpha == Changed command to /wiki [Item name]
+== 1.0 ==  
+Out of alpha, no UX changes from 0.4, just internal tweaks
+
+== 0.4-alpha ==  
+Changed command to /wiki [Item name]
 Added handling for pages which could not be found using search
 
 == 0.3-alpha ==  
