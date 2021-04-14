@@ -1,3 +1,4 @@
 displayName = Wiki Browser
 author = Rigatavr
 version = 1.0
+homepage = https://github.com/dk949/WikiBrowser
