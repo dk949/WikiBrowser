@@ -13,7 +13,7 @@ namespace WikiBrowser.UI {
 
         private ArticleContainer _article;
 
-        private DragableUIPanel _mainPanel;
+        private DragableUiPanel _mainPanel;
         private TerrariaRequest _request;
 
         private VanillaItemSlotWrapper _vanillaItemSlot;
@@ -28,7 +28,7 @@ namespace WikiBrowser.UI {
             _mainPanel.Append(closeButton);
 
 
-            var searchButton = new SearchButton(RequestButtonClicked);
+            var searchButton = new SearchButton(SearchButtonClicked);
             _mainPanel.Append(searchButton);
 
 
@@ -62,10 +62,11 @@ namespace WikiBrowser.UI {
             //TODO: make this part configurable?
             _article.UiTitle = "";
             _article.UiBody = "";
+            _article.UiCurrentPage = 0;
             Visible = false;
         }
 
-        private void RequestButtonClicked(UIMouseEvent evt, UIElement listeningElement) {
+        private void SearchButtonClicked(UIMouseEvent evt, UIElement listeningElement) {
             Log("Started request", LogType.Info);
             if (_vanillaItemSlot.Item.IsAir) {
                 _article.UiTitle = "No Item";
@@ -78,7 +79,7 @@ namespace WikiBrowser.UI {
 
         public void PerformRequest(string item) {
             _request.GetItem(item);
-            var task = Task.Run(() => {
+            Task.Run(() => {
                 while (!_request.IsDone()) {
                     _article.UiBody = "Loading...";
                     _article.UiTitle = "";

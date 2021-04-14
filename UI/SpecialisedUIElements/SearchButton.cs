@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 using static WikiBrowser.UI.UiConfig;
 
 namespace WikiBrowser.UI.SpecialisedUIElements {
-    internal class SearchButton : UIHoverImageButton {
+    internal class SearchButton : UiHoverImageButton {
         private static readonly Texture2D
             Texture = ModContent.GetTexture("Terraria/Item_216"); // This is a magnifying glass
 

@@ -14,16 +14,6 @@ namespace WikiBrowser {
 
         internal MainUiState UiState;
 
-        public WikiBrowser() {
-            //Properties = new ModProperties()
-            //{
-            //	Autoload = true,
-            //	AutoloadGores = true,
-            //	AutoloadSounds = true,
-            //	AutoloadBackgrounds = true
-            //};
-        }
-
         public override void Load() {
             Logger.InfoFormat("{0} Logging", Name);
             // All code below runs only if we're not loading on a server

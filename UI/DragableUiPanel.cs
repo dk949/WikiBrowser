@@ -5,7 +5,7 @@ using Terraria.UI;
 
 namespace WikiBrowser.UI {
     // This class was borrowed from th tModLoader Example Mod
-    internal class DragableUIPanel : UIPanel {
+    internal class DragableUiPanel : UIPanel {
         private Vector2 _offset;
         public bool Dragging;
 

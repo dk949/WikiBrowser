@@ -18,7 +18,7 @@ namespace WikiBrowser.UI {
             _context = context;
             _scale = scale;
             Item = new Item();
-            Item.SetDefaults(0);
+            Item.SetDefaults();
 
             Width.Set(Main.inventoryBack9Texture.Width * scale, 0f);
             Height.Set(Main.inventoryBack9Texture.Height * scale, 0f);

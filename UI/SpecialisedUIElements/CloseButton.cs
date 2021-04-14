@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using static WikiBrowser.UI.UiConfig;
 
 namespace WikiBrowser.UI.SpecialisedUIElements {
-    internal class CloseButton : UIHoverImageButton {
+    internal class CloseButton : UiHoverImageButton {
         private static readonly Texture2D Texture = ModContent.GetTexture("Terraria/Item_2735"); // this is an X
 
         public CloseButton(MouseEvent callback) : base(Texture, Language.GetTextValue("LegacyInterface.52")) {

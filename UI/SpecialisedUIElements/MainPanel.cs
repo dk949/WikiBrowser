@@ -1,7 +1,7 @@
 ﻿using static WikiBrowser.UI.UiConfig;
 
 namespace WikiBrowser.UI.SpecialisedUIElements {
-    internal class MainPanel : DragableUIPanel {
+    internal class MainPanel : DragableUiPanel {
         public MainPanel() : base() {
             SetPadding(General.Margin);
             Left.Set(Panel.InitLeft, 0f);
