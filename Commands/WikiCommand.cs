@@ -20,7 +20,7 @@ namespace WikiBrowser.Commands {
                 ModContent.GetInstance<WikiBrowser>().UiState.PerformRequest(req);
             }
 
-            MainUIState.Visible = true;
+            MainUiState.Visible = true;
         }
     }
 }

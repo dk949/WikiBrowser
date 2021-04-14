@@ -3,7 +3,7 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 using static WikiBrowser.UI.UiConfig;
 
-namespace WikiBrowser.UI {
+namespace WikiBrowser.UI.SpecialisedUIElements {
     public class ArticleContainer : UIElement {
         private PagedString _body;
         private string _title;
@@ -26,6 +26,12 @@ namespace WikiBrowser.UI {
             set => _body.CurrentPage = value;
         }
 
+        public ArticleContainer() {
+            Left.Set(0, 0);
+            Top.Set(0, 0);
+            Width.Set(Panel.Width, 0);
+            Height.Set(Panel.Height, 0);
+        }
 
         public override void OnInitialize() {
             base.OnInitialize(); // Not sure if required, will leave here for now

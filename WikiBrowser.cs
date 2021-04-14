@@ -12,7 +12,7 @@ namespace WikiBrowser {
 
         private UserInterface _panelInterface;
 
-        internal MainUIState UiState;
+        internal MainUiState UiState;
 
         public WikiBrowser() {
             //Properties = new ModProperties()
@@ -29,7 +29,7 @@ namespace WikiBrowser {
             // All code below runs only if we're not loading on a server
             if (!Main.dedServ) {
                 // Custom UI
-                UiState = new MainUIState();
+                UiState = new MainUiState();
                 UiState.Activate();
                 _panelInterface = new UserInterface();
                 _panelInterface.SetState(UiState);
@@ -45,7 +45,7 @@ namespace WikiBrowser {
 
 
         public override void UpdateUI(GameTime gameTime) {
-            if (MainUIState.Visible) {
+            if (MainUiState.Visible) {
                 _panelInterface?.Update(gameTime);
             }
         }
@@ -56,7 +56,7 @@ namespace WikiBrowser {
                 layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
                     "WikiBrowser: Main Panel",
                     delegate {
-                        if (MainUIState.Visible) {
+                        if (MainUiState.Visible) {
                             _panelInterface.Draw(Main.spriteBatch, new GameTime());
                         }
 
