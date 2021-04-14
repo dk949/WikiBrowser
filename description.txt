@@ -45,6 +45,8 @@
 * add a mode where info is not loaded from the wiki and it just displays stats that are available in the game
 
 ## Version Log
+== 1.1 == 
+Added an icon
 
 == 1.0 ==  
 Out of alpha, no UX changes from 0.4, just internal tweaks
