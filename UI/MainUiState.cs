@@ -16,7 +16,7 @@ namespace WikiBrowser.UI {
         private DragableUiPanel _mainPanel;
         private TerrariaRequest _request;
 
-        private VanillaItemSlotWrapper _vanillaItemSlot;
+        private VanillaItemSlotWrapper _itemSlot;
 
         public override void OnInitialize() {
             _request = new TerrariaRequest();
@@ -40,8 +40,8 @@ namespace WikiBrowser.UI {
             _mainPanel.Append(downButton);
 
 
-            _vanillaItemSlot = new SearchItemSlot();
-            _mainPanel.Append(_vanillaItemSlot);
+            _itemSlot = new SearchItemSlot();
+            _mainPanel.Append(_itemSlot);
 
 
             _article = new ArticleContainer();
@@ -50,14 +50,9 @@ namespace WikiBrowser.UI {
             Append(_mainPanel);
         }
 
-
         private void CloseButtonClicked(UIMouseEvent evt, UIElement listeningElement) {
             Main.PlaySound(SoundID.MenuClose);
-            if (!_vanillaItemSlot.Item.IsAir) {
-                // QuickSpawnClonedItem will preserve mod data of the item. QuickSpawnItem will just spawn a fresh version of the item, losing the prefix.
-                Main.LocalPlayer.QuickSpawnClonedItem(_vanillaItemSlot.Item, _vanillaItemSlot.Item.stack);
-                _vanillaItemSlot.Item.TurnToAir();
-            }
+            ReturnItem();
 
             //TODO: make this part configurable?
             _article.UiTitle = "";
@@ -66,15 +61,24 @@ namespace WikiBrowser.UI {
             Visible = false;
         }
 
+        internal void ReturnItem() {
+            if (_itemSlot.Item.IsAir) return;
+            // QuickSpawnClonedItem will preserve mod data of the item. QuickSpawnItem will just spawn a fresh version of the item, losing the prefix.
+            Main.LocalPlayer.QuickSpawnClonedItem(_itemSlot.Item, _itemSlot.Item.stack);
+            _itemSlot.Item.TurnToAir();
+        }
+
         private void SearchButtonClicked(UIMouseEvent evt, UIElement listeningElement) {
+            Main.PlaySound(SoundID.MenuTick);
+            _article.UiCurrentPage = 0;
             Log("Started request", LogType.Info);
-            if (_vanillaItemSlot.Item.IsAir) {
+            if (_itemSlot.Item.IsAir) {
                 _article.UiTitle = "No Item";
                 _article.UiBody = "";
                 return;
             }
 
-            PerformRequest(_vanillaItemSlot.Item.Name);
+            PerformRequest(_itemSlot.Item.Name);
         }
 
         public void PerformRequest(string item) {
@@ -92,10 +96,12 @@ namespace WikiBrowser.UI {
         }
 
         private void PageUpClicked(UIMouseEvent evt, UIElement listeningElement) {
+            Main.PlaySound(SoundID.MenuTick);
             _article.PrevPage();
         }
 
         private void PageDownClicked(UIMouseEvent evt, UIElement listeningElement) {
+            Main.PlaySound(SoundID.MenuTick);
             _article.NextPage();
         }
     }
