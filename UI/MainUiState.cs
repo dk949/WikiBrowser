@@ -14,12 +14,15 @@ namespace WikiBrowser.UI {
         private ArticleContainer _article;
 
         private DragableUiPanel _mainPanel;
-        private TerrariaRequest _request;
+
+        private Request _tRequest;
+        private Request _sRequest;
 
         private VanillaItemSlotWrapper _itemSlot;
 
         public override void OnInitialize() {
-            _request = new TerrariaRequest();
+            _tRequest = new TerrariaRequest();
+            _sRequest = new StatRequest();
 
             _mainPanel = new MainPanel();
 
@@ -78,19 +81,34 @@ namespace WikiBrowser.UI {
                 return;
             }
 
-            PerformRequest(_itemSlot.Item.Name);
+            PerformSRequest(_itemSlot.Item);
         }
 
         public void PerformRequest(string item) {
-            _request.GetItem(item);
+            _tRequest.GetItem(item);
             Task.Run(() => {
-                while (!_request.IsDone()) {
+                while (!_tRequest.IsDone()) {
                     _article.UiBody = "Loading...";
                     _article.UiTitle = "";
                 }
 
-                _article.UiTitle = _request.Result().Title;
-                _article.UiBody = _request.Result().Body;
+                _article.UiTitle = _tRequest.Result().Title;
+                _article.UiBody = _tRequest.Result().Body;
+                Log("Task finished, page loaded", LogType.Info);
+            });
+        }
+
+        // TODO: have 2 classes with different UIs. they inherit from one, just change the value fo request
+        public void PerformSRequest(Item item) {
+            _sRequest.GetItem(item);
+            Task.Run(() => {
+                while (!_sRequest.IsDone()) {
+                    _article.UiBody = "Loading...";
+                    _article.UiTitle = "";
+                }
+
+                _article.UiTitle = _sRequest.Result().Title;
+                _article.UiBody = _sRequest.Result().Body;
                 Log("Task finished, page loaded", LogType.Info);
             });
         }

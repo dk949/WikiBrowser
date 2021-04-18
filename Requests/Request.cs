@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Terraria;
 
 namespace WikiBrowser.Requests {
     public abstract class Request {
@@ -6,6 +7,7 @@ namespace WikiBrowser.Requests {
         protected abstract string GetBody(string res);
         protected abstract string GetTitle(string res);
 
+        public abstract void GetItem(Item item);
         public abstract void GetItem(string item);
 
         public bool IsDone() {

@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Terraria;
+using Terraria.ID;
 using static WikiBrowser.Logging;
 
 namespace WikiBrowser.Requests {
@@ -81,6 +83,23 @@ namespace WikiBrowser.Requests {
             }
 
             return null;
+        }
+
+
+        public static string TileFromId(int id) {
+            foreach (var field in typeof(TileID).GetFields()) {
+                try {
+                    // For some reason it was failing when i was checking types
+                    // Also can't use as or is, because ushort is a primitive
+                    if ((ushort) field.GetValue(null) == (ushort) id) {
+                        return field.Name;
+                    }
+                } catch (InvalidCastException) {
+                    // Ignored
+                }
+            }
+
+            return "Tile not found";
         }
     }
 }

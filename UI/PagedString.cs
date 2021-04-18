@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,7 +29,7 @@ namespace WikiBrowser.UI {
 
 
         private static IEnumerable<string> FromString(string body) {
-            var paragraphs = body.Split('\n');
+            var paragraphs = body.Split(new[] {'\n'}, StringSplitOptions.None);
             var lines = new List<string>();
 
             foreach (var paragraph in paragraphs) lines.AddRange(paragraph.Section(LineLength, " "));
