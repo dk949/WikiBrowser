@@ -48,10 +48,10 @@ namespace WikiBrowser {
             if (stationNeeded) {
                 sb.Remove(sb.Length - 2, 2);
             } else {
-                sb.Append("By Hand");
+                sb.Append("By Hand ");
             }
 
-            sb.Append("you need -> ");
+            sb.Append(" | you'll need: ");
 
 
             foreach (var ingredient in recipe.requiredItem) {

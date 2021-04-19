@@ -147,23 +147,20 @@ namespace WikiBrowser.UI {
 
         private void SelectWikiMode(UIMouseEvent evt, UIElement listeningElement) {
             Main.PlaySound(SoundID.MenuTick);
-
-            _article.UiTitle = _results[0].Title;
-            _article.UiBody = _results[0].Body;
+            SwitchToWindow(0);
             Main.NewText("Wiki mode selected");
         }
 
+
         private void SelectUsedInMode(UIMouseEvent evt, UIElement listeningElement) {
             Main.PlaySound(SoundID.MenuTick);
-            _article.UiTitle = _results[1].Title;
-            _article.UiBody = _results[1].Body;
+            SwitchToWindow(1);
             Main.NewText("Used in mode selected");
         }
 
         private void SelectCraftingMode(UIMouseEvent evt, UIElement listeningElement) {
             Main.PlaySound(SoundID.MenuTick);
-            _article.UiTitle = _results[2].Title;
-            _article.UiBody = _results[2].Body;
+            SwitchToWindow(2);
             Main.NewText("Crafting mode selected");
         }
 
@@ -197,6 +194,11 @@ namespace WikiBrowser.UI {
 
             _article.UiTitle = _results[_modeSelector.CurrentlySelected].Title;
             _article.UiBody = _results[_modeSelector.CurrentlySelected].Body;
+        }
+
+        private void SwitchToWindow(int window) {
+            if (_results[window].Title != null) _article.UiTitle = _results[window].Title;
+            if (_results[window].Body != null) _article.UiBody = _results[window].Body;
         }
     }
 }
