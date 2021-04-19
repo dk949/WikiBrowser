@@ -1,5 +1,5 @@
 ﻿namespace WikiBrowser.Requests {
-    public struct Result {
+    internal struct Result {
         public string Title { get; set; }
         public string Body { get; set; }
 

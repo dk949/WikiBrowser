@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using WikiBrowser.Requests;
 
 namespace WikiBrowser {
-    public static class Extensions {
+    internal static class Extensions {
         public static IEnumerable<string> Section(this string text, int charsPerSection, string breakChar) {
             var count = 0;
             var start = 0;

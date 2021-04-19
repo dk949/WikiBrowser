@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria.UI;
-using static WikiBrowser.UI.UiConfig;
 
 namespace WikiBrowser.UI {
     internal class UiModeSelector : UIElement {
         private readonly List<UiRadioButton> _buttons;
-        private int _currentlySelected = 0;
 
-        public int CurrentlySelected => _currentlySelected;
+        public int CurrentlySelected { get; private set; }
 
 
         internal UiModeSelector() {
@@ -20,10 +17,17 @@ namespace WikiBrowser.UI {
 
         public override void Update(GameTime gameTime) {
             base.Update(gameTime);
-            for (int i = 0; i < _buttons.Count; i++) {
-                if (!_buttons[i].IsSelected || i == _currentlySelected) continue;
-                _buttons[_currentlySelected].IsSelected = false;
-                _currentlySelected = i;
+            for (var i = 0; i < _buttons.Count; i++) {
+                if (!_buttons[i].IsSelected || i == CurrentlySelected) continue;
+                _buttons[CurrentlySelected].IsSelected = false;
+                CurrentlySelected = i;
+            }
+        }
+
+        public void Reset() {
+            _buttons[0].IsSelected = true;
+            for (var i = 1; i < _buttons.Count; i++) {
+                _buttons[i].IsSelected = false;
             }
         }
     }

@@ -1,5 +1,5 @@
 ﻿namespace WikiBrowser {
-    public static class Textures {
+    internal static class Textures {
         internal static readonly string PageUp = TextureHelper.AddPath("PageUp");
         internal static readonly string PageDown = TextureHelper.AddPath("PageDown");
     }

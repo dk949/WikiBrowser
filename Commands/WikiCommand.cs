@@ -4,7 +4,7 @@ using WikiBrowser.Requests;
 using static WikiBrowser.Logging;
 
 namespace WikiBrowser.Commands {
-    public class WikiCommand : ModCommand {
+    internal class WikiCommand : ModCommand {
         public override CommandType Type
             => CommandType.Chat;
 

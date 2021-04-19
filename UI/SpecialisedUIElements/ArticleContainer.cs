@@ -4,7 +4,7 @@ using Terraria.UI;
 using static WikiBrowser.UI.UiConfig;
 
 namespace WikiBrowser.UI.SpecialisedUIElements {
-    public class ArticleContainer : UIElement {
+    internal class ArticleContainer : UIElement {
         private PagedString _body;
         private string _title;
 

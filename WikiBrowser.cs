@@ -8,8 +8,6 @@ using Terraria.UI;
 
 namespace WikiBrowser {
     public class WikiBrowser : Mod {
-        public static ModHotKey RandomBuffHotKey;
-
         private UserInterface _panelInterface;
 
         internal MainUiState UiState;

@@ -2,7 +2,7 @@
 using Terraria;
 
 namespace WikiBrowser.Requests {
-    public abstract class StatRequest : Request {
+    internal abstract class StatRequest : Request {
         protected override string GetBody(string res) {
             return res.Split('&')[1];
         }

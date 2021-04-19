@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using static WikiBrowser.UI.UiConfig;
+﻿using static WikiBrowser.UI.UiConfig;
 
 namespace WikiBrowser.UI.SpecialisedUIElements {
     internal class WikiModeButton : UiRadioButton {

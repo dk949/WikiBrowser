@@ -1,7 +1,7 @@
 ﻿using Terraria;
 
 namespace WikiBrowser.Requests {
-    public class WikiRequest : HttpRequest {
+    internal class WikiRequest : HttpRequest {
         public override void GetItem(Item item) {
             GetItem(item.Name);
         }

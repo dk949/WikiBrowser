@@ -2,7 +2,7 @@
 using Terraria;
 
 namespace WikiBrowser.Requests {
-    public abstract class Request {
+    internal abstract class Request {
         protected Task<string> Task;
         protected abstract string GetBody(string res);
         protected abstract string GetTitle(string res);

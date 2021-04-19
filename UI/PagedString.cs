@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace WikiBrowser.UI {
-    public class PagedString {
+    internal class PagedString {
         private const int PageLength = 15; // lines
         private const int LineLength = 50;
         private IEnumerable<string> _pages;

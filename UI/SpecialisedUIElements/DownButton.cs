@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
-using static WikiBrowser.UI.UiConfig;
 
 namespace WikiBrowser.UI.SpecialisedUIElements {
     internal class DownButton : UIImageButton {

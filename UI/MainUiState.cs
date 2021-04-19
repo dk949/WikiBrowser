@@ -169,6 +169,7 @@ namespace WikiBrowser.UI {
                 _results[i].Body = "\n";
             }
 
+            _modeSelector.Reset();
             _article.UiCurrentPage = 0;
         }
 

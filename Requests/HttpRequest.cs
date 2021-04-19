@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 
 namespace WikiBrowser.Requests {
-    public abstract class HttpRequest : Request {
+    internal abstract class HttpRequest : Request {
         private static readonly HttpClient HttpClient = new HttpClient();
 
         public static Task<string> Get(string item, string baseUri, Helpers.RequestType type) {

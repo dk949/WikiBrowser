@@ -3,7 +3,7 @@ using System;
 using Terraria.ModLoader;
 
 namespace WikiBrowser {
-    public class Logging {
+    internal class Logging {
         // Portable way o logging, commend out the #define MOD to enable Console.WriteLine()
         public static void Log(string message, LogType type) {
 #if MOD

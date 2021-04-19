@@ -12,7 +12,7 @@ using Terraria.ID;
 using static WikiBrowser.Logging;
 
 namespace WikiBrowser.Requests {
-    public static class Helpers {
+    internal static class Helpers {
         public const string BaseUri = "https://terraria.fandom.com/api.php";
 
         public enum RequestType {
@@ -41,7 +41,9 @@ namespace WikiBrowser.Requests {
 
         public static Result ResultUnavailable =>
             new Result("This page is not available.",
-                "This page is only generated for items and tiles.");
+                "This page is only generated for items and tiles." +
+                "\n \nIf you searched for an item and are still seeing this page," +
+                " the item could not be found with the current method. Sorry.");
 
         public static string GetExtract(string json) {
             return JsonConvert.DeserializeObject<JObject>(json)?.SelectToken("$..extract")?.ToString();

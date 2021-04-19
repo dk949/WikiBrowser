@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 
 namespace WikiBrowser.UI {
-    public static class UiConfig {
+    internal static class UiConfig {
         public static readonly UiElementConfig Panel = new UiElementConfig {
             InitLeft = 600,
             InitTop = 100,

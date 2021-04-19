@@ -4,8 +4,8 @@ using Terraria;
 using Terraria.ModLoader;
 
 namespace WikiBrowser.Requests {
-    public class UsedInRequest : StatRequest {
-        private const string title = "Items that can be crafted with";
+    internal class UsedInRequest : StatRequest {
+        private const string Title = "Items that can be crafted with";
 
         protected override Task<string> Get(Item item) {
             return System.Threading.Tasks.Task.Run(() => GetUsedForCrafting(item));
@@ -16,13 +16,13 @@ namespace WikiBrowser.Requests {
             var sb = new StringBuilder();
             var finder = new RecipeFinder();
 
-            sb.AppendFormat("{0} {1}&\n", title, item.Name);
+            sb.AppendFormat("{0} {1}&\n", Title, item.Name);
             finder.AddIngredient(item.type);
             foreach (var recipe in finder.SearchRecipes()) {
                 sb.AppendRecipe(recipe);
             }
 
-            if (sb.Length > (title.Length + 43)) {
+            if (sb.Length > (Title.Length + 43)) {
                 sb.Remove(sb.Length - 43, 43);
             }
 
