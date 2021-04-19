@@ -58,6 +58,27 @@ namespace WikiBrowser.UI {
             Height = 10
         };
 
+        public static readonly UiElementConfig WikiMode = new UiElementConfig {
+            InitLeft = 300,
+            InitTop = 0,
+            Width = General.IconWidth,
+            Height = General.IconHeight
+        };
+
+        public static readonly UiElementConfig UsedInMode = new UiElementConfig {
+            InitLeft = WikiMode.InitLeft + General.IconGaps,
+            InitTop = 0,
+            Width = General.IconWidth,
+            Height = General.IconHeight
+        };
+
+        public static readonly UiElementConfig CraftingMode = new UiElementConfig {
+            InitLeft = UsedInMode.InitLeft + General.IconGaps,
+            InitTop = 0,
+            Width = General.IconWidth,
+            Height = General.IconHeight
+        };
+
         public struct General {
             public const float IconWidth = 40;
             public const float IconHeight = 40;

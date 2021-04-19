@@ -122,5 +122,21 @@ namespace WikiBrowser.UI {
             Main.PlaySound(SoundID.MenuTick);
             _article.NextPage();
         }
+
+
+        private void SelectWikiMode(UIMouseEvent evt, UIElement listeningElement) {
+            Main.PlaySound(SoundID.MenuTick);
+            Main.NewText("Wiki mode selected");
+        }
+
+        private void SelectUsedInMode(UIMouseEvent evt, UIElement listeningElement) {
+            Main.PlaySound(SoundID.MenuTick);
+            Main.NewText("Used in mode selected");
+        }
+
+        private void SelectCraftingMode(UIMouseEvent evt, UIElement listeningElement) {
+            Main.PlaySound(SoundID.MenuTick);
+            Main.NewText("Crafting mode selected");
+        }
     }
 }
