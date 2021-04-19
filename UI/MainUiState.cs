@@ -27,6 +27,23 @@ namespace WikiBrowser.UI {
             _mainPanel = new MainPanel();
 
 
+            var modeSelector = new UiModeSelector();
+
+            var wikiModeButton = new WikiModeButton(SelectWikiMode);
+            modeSelector.Add(wikiModeButton);
+            _mainPanel.Append(wikiModeButton);
+
+            var usedInModeButton = new UsedInModeButton(SelectUsedInMode);
+            modeSelector.Add(usedInModeButton);
+            _mainPanel.Append(usedInModeButton);
+
+            var craftingModeButton = new CraftingModeButton(SelectCraftingMode);
+            modeSelector.Add(craftingModeButton);
+            _mainPanel.Append(craftingModeButton);
+
+            _mainPanel.Append(modeSelector);
+
+
             var closeButton = new CloseButton(CloseButtonClicked);
             _mainPanel.Append(closeButton);
 

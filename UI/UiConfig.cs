@@ -59,21 +59,21 @@ namespace WikiBrowser.UI {
         };
 
         public static readonly UiElementConfig WikiMode = new UiElementConfig {
-            InitLeft = 300,
+            InitLeft = Panel.Width * 0.7f,
             InitTop = 0,
             Width = General.IconWidth,
             Height = General.IconHeight
         };
 
         public static readonly UiElementConfig UsedInMode = new UiElementConfig {
-            InitLeft = WikiMode.InitLeft + General.IconGaps,
+            InitLeft = WikiMode.InitLeft + General.IconWidth / 2 + General.IconGaps,
             InitTop = 0,
             Width = General.IconWidth,
             Height = General.IconHeight
         };
 
         public static readonly UiElementConfig CraftingMode = new UiElementConfig {
-            InitLeft = UsedInMode.InitLeft + General.IconGaps,
+            InitLeft = UsedInMode.InitLeft + General.IconWidth / 2 + General.IconGaps,
             InitTop = 0,
             Width = General.IconWidth,
             Height = General.IconHeight
