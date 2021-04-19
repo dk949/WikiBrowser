@@ -9,6 +9,10 @@
       item to the player, but closing the game will remove it.
 * Alternatively type /wiki [Search term]. If a page exists or a similar one can be found, it will show up.
     * Note: spaces are allowed, as well as any capitalisation.
+* Use the 3 radio buttons at the bottom of the page to switch between the text from the wiki and crafting information
+    * If the search function is used (instead of the item frame), if an item can be found its crafting information will
+      be presented, otherwise you will see a screen saying that the item could not be found.
+    * You will also see this screen when searching for non item/tile things like NPCs
 
 ## Completed Features
 
@@ -21,6 +25,9 @@
     * E.g. "Chlorophyte Mask" should redirect to "Chlorophyte armor"
 * Version log
 * Allow the user to type the name of an item/npc if they can't place them in the window.
+* Make 3 windows (using radio buttons for navigation) displaying info from the wiki, what can be crafted with an item
+  and what is needed to craft the item
+    * Like a terrible version of Recipe Browser
 
 ## Known bugs/missing features
 
@@ -40,12 +47,14 @@
 ## Nice-to-have features
 
 * allow hovering over items/NPCs and pressing a key to get the article about the thing under the cursor
-* add crafting hints (these can't be loaded from the wiki the way I'm doing it now, but maybe I can make a simpler
-  version of recipe browser?)
-* add a mode where info is not loaded from the wiki and it just displays stats that are available in the game
 
 ## Version Log
-== 1.1 == Added an icon
+
+== 2.0 ==  
+Added crafting instructions (see completed features)
+
+== 1.1 ==  
+Added an icon
 
 == 1.0 ==  
 Out of alpha, no UX changes from 0.4, just internal tweaks
