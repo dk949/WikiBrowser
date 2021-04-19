@@ -1,5 +1,6 @@
 ﻿using Terraria.ModLoader;
 using WikiBrowser.UI;
+using WikiBrowser.Requests;
 using static WikiBrowser.Logging;
 
 namespace WikiBrowser.Commands {
@@ -17,7 +18,12 @@ namespace WikiBrowser.Commands {
             Log("Making UI visible", LogType.Info);
             if (args.Length > 0) {
                 var req = string.Join(" ", args);
-                ModContent.GetInstance<WikiBrowser>().UiState.PerformRequest(req);
+                var item = Helpers.ItemFromName(req);
+                if (item != null) {
+                    ModContent.GetInstance<WikiBrowser>().UiState.PerformItemRequest(item);
+                } else {
+                    ModContent.GetInstance<WikiBrowser>().UiState.PerformRequest(req);
+                }
             }
 
             MainUiState.Visible = true;

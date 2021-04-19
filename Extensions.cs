@@ -37,7 +37,7 @@ namespace WikiBrowser {
 
 
         public static void AppendRecipe(this StringBuilder sb, Recipe recipe) {
-            sb.AppendFormat("{0} [at] ", recipe.createItem.Name);
+            sb.AppendFormat("{0} can be crafted [at] ", recipe.createItem.Name);
             var stationNeeded = false;
             foreach (var tile in recipe.requiredTile) {
                 if (tile == -1) break;
@@ -48,10 +48,11 @@ namespace WikiBrowser {
             if (stationNeeded) {
                 sb.Remove(sb.Length - 2, 2);
             } else {
-                sb.Append("By Hand ");
+                sb.Remove(sb.Length - 5, 5);
+                sb.Append("by Hand ");
             }
 
-            sb.Append(" | you'll need: ");
+            sb.Append(" :: you'll need: ");
 
 
             foreach (var ingredient in recipe.requiredItem) {

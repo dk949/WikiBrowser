@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Terraria;
@@ -104,6 +105,30 @@ namespace WikiBrowser.Requests {
             }
 
             return "Tile not found";
+        }
+
+        public static Item ItemFromName(string name) {
+            var type = IdFromItem(name);
+            if (type == -1) return null;
+            var id = Item.NewItem(new Rectangle(), type);
+            return Main.item[id];
+        }
+
+        private static int IdFromItem(string name) {
+            // This is not guaranteed to work, not all item ID's match their names. But this is the best I can do right now
+            // TODO: make this better?
+            foreach (var field in typeof(ItemID).GetFields()) {
+                if (!string.Equals(field.Name, name.Replace(" ", string.Empty),
+                    StringComparison.CurrentCultureIgnoreCase)) {
+                    continue;
+                }
+
+                try {
+                    return (short) field.GetValue(null);
+                } catch (InvalidCastException) { }
+            }
+
+            return -1;
         }
     }
 }
