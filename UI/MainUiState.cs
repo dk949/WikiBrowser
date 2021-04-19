@@ -148,20 +148,17 @@ namespace WikiBrowser.UI {
         private void SelectWikiMode(UIMouseEvent evt, UIElement listeningElement) {
             Main.PlaySound(SoundID.MenuTick);
             SwitchToWindow(0);
-            Main.NewText("Wiki mode selected");
         }
 
 
         private void SelectUsedInMode(UIMouseEvent evt, UIElement listeningElement) {
             Main.PlaySound(SoundID.MenuTick);
             SwitchToWindow(1);
-            Main.NewText("Used in mode selected");
         }
 
         private void SelectCraftingMode(UIMouseEvent evt, UIElement listeningElement) {
             Main.PlaySound(SoundID.MenuTick);
             SwitchToWindow(2);
-            Main.NewText("Crafting mode selected");
         }
 
         private void ResetArticle() {
