@@ -196,6 +196,7 @@ namespace WikiBrowser.UI {
         private void SwitchToWindow(int window) {
             if (_results[window].Title != null) _article.UiTitle = _results[window].Title;
             if (_results[window].Body != null) _article.UiBody = _results[window].Body;
+            _article.UiCurrentPage = 0;
         }
     }
 }
