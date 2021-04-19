@@ -9,6 +9,8 @@ namespace WikiBrowser.UI {
         private readonly List<UiRadioButton> _buttons;
         private int _currentlySelected = 0;
 
+        public int CurrentlySelected => _currentlySelected;
+
 
         internal UiModeSelector() {
             _buttons = new List<UiRadioButton>();

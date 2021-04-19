@@ -1,8 +1,7 @@
-﻿using System.Threading.Tasks;
-using Terraria;
+﻿using Terraria;
 
 namespace WikiBrowser.Requests {
-    public class TerrariaRequest : HttpRequest {
+    public class WikiRequest : HttpRequest {
         public override void GetItem(Item item) {
             GetItem(item.Name);
         }

@@ -38,6 +38,10 @@ namespace WikiBrowser.Requests {
             }
         };
 
+        public static Result ResultUnavailable =>
+            new Result("This page is not available.",
+                "This page is only generated for items and tiles.");
+
         public static string GetExtract(string json) {
             return JsonConvert.DeserializeObject<JObject>(json)?.SelectToken("$..extract")?.ToString();
         }

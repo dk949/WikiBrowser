@@ -15,33 +15,39 @@ namespace WikiBrowser.UI {
 
         private DragableUiPanel _mainPanel;
 
-        private Request _tRequest;
-        private Request _sRequest;
+        private UiModeSelector _modeSelector;
+
+        private WikiRequest _wikiRequest;
+        private CraftingRequest _craftingRequest;
+        private UsedInRequest _usedInRequest;
+
+        private readonly Result[] _results = {new Result(), new Result(), new Result()};
 
         private VanillaItemSlotWrapper _itemSlot;
 
         public override void OnInitialize() {
-            _tRequest = new TerrariaRequest();
-            _sRequest = new StatRequest();
+            _wikiRequest = new WikiRequest();
+            _craftingRequest = new CraftingRequest();
+            _usedInRequest = new UsedInRequest();
 
             _mainPanel = new MainPanel();
 
 
-            var modeSelector = new UiModeSelector();
+            _modeSelector = new UiModeSelector();
 
             var wikiModeButton = new WikiModeButton(SelectWikiMode);
-            modeSelector.Add(wikiModeButton);
+            _modeSelector.Add(wikiModeButton);
             _mainPanel.Append(wikiModeButton);
 
             var usedInModeButton = new UsedInModeButton(SelectUsedInMode);
-            modeSelector.Add(usedInModeButton);
+            _modeSelector.Add(usedInModeButton);
             _mainPanel.Append(usedInModeButton);
 
             var craftingModeButton = new CraftingModeButton(SelectCraftingMode);
-            modeSelector.Add(craftingModeButton);
+            _modeSelector.Add(craftingModeButton);
             _mainPanel.Append(craftingModeButton);
 
-            _mainPanel.Append(modeSelector);
+            _mainPanel.Append(_modeSelector);
 
 
             var closeButton = new CloseButton(CloseButtonClicked);
@@ -73,11 +79,7 @@ namespace WikiBrowser.UI {
         private void CloseButtonClicked(UIMouseEvent evt, UIElement listeningElement) {
             Main.PlaySound(SoundID.MenuClose);
             ReturnItem();
-
-            //TODO: make this part configurable?
-            _article.UiTitle = "";
-            _article.UiBody = "";
-            _article.UiCurrentPage = 0;
+            ResetArticle();
             Visible = false;
         }
 
@@ -90,42 +92,44 @@ namespace WikiBrowser.UI {
 
         private void SearchButtonClicked(UIMouseEvent evt, UIElement listeningElement) {
             Main.PlaySound(SoundID.MenuTick);
+            //ResetArticle();
             _article.UiCurrentPage = 0;
             Log("Started request", LogType.Info);
             if (_itemSlot.Item.IsAir) {
-                _article.UiTitle = "No Item";
-                _article.UiBody = "";
+                WriteToAll("No Item", "");
                 return;
             }
 
-            PerformSRequest(_itemSlot.Item);
+            PerformItemRequest(_itemSlot.Item);
         }
 
         public void PerformRequest(string item) {
-            _tRequest.GetItem(item);
+            _wikiRequest.GetItem(item);
             Task.Run(() => {
-                while (!_tRequest.IsDone()) {
-                    _article.UiBody = "Loading...";
-                    _article.UiTitle = "";
+                while (!_wikiRequest.IsDone()) {
+                    WriteToAll("", "Loading...");
                 }
 
-                _article.UiTitle = _tRequest.Result().Title;
-                _article.UiBody = _tRequest.Result().Body;
+                _results[0] = _wikiRequest.Result();
+                _results[1] = Helpers.ResultUnavailable;
+                _results[2] = Helpers.ResultUnavailable;
+
+                _article.UiTitle = _results[0].Title;
+                _article.UiBody = _results[0].Body;
                 Log("Task finished, page loaded", LogType.Info);
             });
         }
 
-        // TODO: have 2 classes with different UIs. they inherit from one, just change the value fo request
-        public void PerformSRequest(Item item) {
-            _sRequest.GetItem(item);
+        public void PerformItemRequest(Item item) {
+            _wikiRequest.GetItem(item);
+            _usedInRequest.GetItem(item);
+            _craftingRequest.GetItem(item);
             Task.Run(() => {
-                while (!_sRequest.IsDone()) {
-                    _article.UiBody = "Loading...";
-                    _article.UiTitle = "";
+                while (!(_wikiRequest.IsDone() && _usedInRequest.IsDone() && _craftingRequest.IsDone())) {
+                    WriteToAll("", "Loading...");
                 }
 
-                _article.UiTitle = _sRequest.Result().Title;
-                _article.UiBody = _sRequest.Result().Body;
+                PopulateArticle();
                 Log("Task finished, page loaded", LogType.Info);
             });
         }
@@ -143,17 +147,56 @@ namespace WikiBrowser.UI {
 
         private void SelectWikiMode(UIMouseEvent evt, UIElement listeningElement) {
             Main.PlaySound(SoundID.MenuTick);
+
+            _article.UiTitle = _results[0].Title;
+            _article.UiBody = _results[0].Body;
             Main.NewText("Wiki mode selected");
         }
 
         private void SelectUsedInMode(UIMouseEvent evt, UIElement listeningElement) {
             Main.PlaySound(SoundID.MenuTick);
+            _article.UiTitle = _results[1].Title;
+            _article.UiBody = _results[1].Body;
             Main.NewText("Used in mode selected");
         }
 
         private void SelectCraftingMode(UIMouseEvent evt, UIElement listeningElement) {
             Main.PlaySound(SoundID.MenuTick);
+            _article.UiTitle = _results[2].Title;
+            _article.UiBody = _results[2].Body;
             Main.NewText("Crafting mode selected");
+        }
+
+        private void ResetArticle() {
+            _article.UiTitle = "";
+            _article.UiBody = "\n";
+            for (var i = 0; i < _results.Length; i++) {
+                _results[i].Title = "";
+                _results[i].Body = "\n";
+            }
+
+            _article.UiCurrentPage = 0;
+        }
+
+        private void WriteToAll(string title, string body) {
+            if (body == "") body = "\n";
+
+            for (var i = 0; i < _results.Length; i++) {
+                _results[i].Body = body;
+                _results[i].Title = title;
+            }
+
+            _article.UiBody = _results[0].Body;
+            _article.UiTitle = _results[0].Title;
+        }
+
+        private void PopulateArticle() {
+            _results[0] = _wikiRequest.Result();
+            _results[1] = _usedInRequest.Result();
+            _results[2] = _craftingRequest.Result();
+
+            _article.UiTitle = _results[_modeSelector.CurrentlySelected].Title;
+            _article.UiBody = _results[_modeSelector.CurrentlySelected].Body;
         }
     }
 }
